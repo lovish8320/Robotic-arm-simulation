@@ -1,4 +1,13 @@
 numpy
 matplotlib
 scipy
+pytestnumpy
+matplotlib
+scipy
+pytestnumpy
+matplotlib
+scipy
+pytestnumpy
+matplotlib
+scipy
 pytest
