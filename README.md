@@ -1,60 +1,96 @@
 # Robotic Arm Simulation
 
-A Python project for simulating a planar three-revolute-joint (3R) robotic arm.
+A Python simulator for planar and spatial three-revolute-joint (3R) robotic
+arms. It provides forward kinematics, inverse kinematics, joint-limit-aware
+3D target solving, and Matplotlib visualizations.
+
+## Features
+
+- **2D planar arm:** analytical forward and inverse kinematics.
+- **3D spatial arm:** yaw-pitch-pitch forward kinematics with 4x4 homogeneous
+  transformations.
+- **3D inverse kinematics:** numerical XYZ target solving with configurable
+  joint limits.
+- **Visualization:** 2D and 3D arm plots, with optional target markers.
+- **Tests:** coverage for kinematics, numerical solving, and 3D plotting.
 
 ## Setup
 
-Use Python 3.10 or newer. Install the project dependencies with:
+Use Python 3.10 or newer. From the repository root, create an optional virtual
+environment and install dependencies:
 
-```bash
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
 ```
 
-## Forward kinematics
+## Visualize the 3D arm
 
-`src/forward_kinamatics.py` provides `forward_kinematics(joint_angles, link_lengths)`.
-Pass exactly three joint angles in radians and three positive link lengths in any
-consistent unit. Angles are relative to the previous link, with the first angle
-measured from the positive X axis.
+Run the spatial arm at its home pose:
 
-The function returns `(positions, transform)`. `positions` is a 4-by-2 NumPy
-array containing the base, both intermediate joints, and end-effector XY
-coordinates. `transform` is the 3-by-3 homogeneous transform from the base frame
-to the end-effector frame.
-
-Example:
-
-```python
-from src.forward_kinamatics import forward_kinematics
-
-positions, transform = forward_kinematics(
-    joint_angles=[0.0, 0.0, 0.0],
-    link_lengths=[1.0, 1.0, 1.0],
-)
-print(positions[-1])  # [3. 0.]
-print(transform)
+```powershell
+python -m src.main --mode 3d
 ```
 
-## Tests
+Solve and display a reachable XYZ target:
 
-Run the test suite from the repository root with:
+```powershell
+python -m src.main --mode 3d --lengths 0.5 1.0 0.8 --target 1.2 0.8 1.0
+```
 
-```bash
+The program prints the solved joint angles and end-effector transform, then
+opens an interactive Matplotlib 3D window. Close that window to finish the
+program. Add `--no-show` when running without a display or in automated checks.
+
+## 3D arm model
+
+The spatial 3R arm has three joints:
+
+1. Base yaw around the global Z axis.
+2. Shoulder pitch around its local Y axis.
+3. Elbow pitch around its local Y axis.
+
+In 3D mode, `--lengths` means:
+
+```text
+base_height upper_arm_length forearm_length
+```
+
+`src/forward_kinematics_3d.py` returns base, shoulder, elbow, and end-effector
+XYZ positions plus the final 4x4 homogeneous transform.
+
+## Use the planar 2D arm
+
+Visualize a direct joint-angle configuration:
+
+```powershell
+python -m src.main --mode 2d --angles 0.5 -0.4 0.7
+```
+
+Solve a 2D target with a chosen orientation:
+
+```powershell
+python -m src.main --mode 2d --target 1.5 1.0 --orientation 1.5708 --elbow up
+```
+
+## Run tests
+
+```powershell
 python -m pytest
 ```
 
-Inverse kinematics, visualization, and the interactive entry point are planned
-but are not implemented yet.
-
-## 3D simulation
-
-The spatial arm has three degrees of freedom:
-
-1. Base yaw around the Z axis.
-2. Shoulder pitch around the local Y axis.
-3. Elbow pitch around the local Y axis.
-
-For 3D mode, link lengths represent:
+## Project layout
 
 ```text
-base height, upper-arm length, forearm length
+src/
+  forward_kinamatics.py      # Planar forward kinematics (legacy filename)
+  inverse_kinematics.py      # Planar analytical inverse kinematics
+  visualization.py           # Planar plot
+  forward_kinematics_3d.py   # Spatial forward kinematics
+  inverse_kinematics_3d.py   # Spatial numerical inverse kinematics
+  visualization_3d.py        # Spatial plot
+  main.py                    # Command-line entry point
+tests/                       # Automated tests
+report/                      # Project report material
+```
