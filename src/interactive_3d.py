@@ -88,6 +88,14 @@ def _draw_arm(arm_axis, positions: np.ndarray, link_lengths: np.ndarray) -> None
     )
     arm_axis.scatter(*positions[0], color="#212121", s=65, label="Base")
     arm_axis.scatter(*positions[-1], color="#d32f2f", s=75, label="End effector")
+    end_effector = positions[-1]
+    arm_axis.text(
+        *end_effector,
+        "  End effector\n"
+        f"  ({end_effector[0]:.3f}, {end_effector[1]:.3f}, {end_effector[2]:.3f})",
+        color="#b71c1c",
+        fontsize=9,
+    )
 
     reach = float(np.sum(link_lengths))
     center = (np.min(positions, axis=0) + np.max(positions, axis=0)) / 2
