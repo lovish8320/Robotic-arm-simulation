@@ -45,3 +45,16 @@ python -m pytest
 
 Inverse kinematics, visualization, and the interactive entry point are planned
 but are not implemented yet.
+
+## 3D simulation
+
+The spatial arm has three degrees of freedom:
+
+1. Base yaw around the Z axis.
+2. Shoulder pitch around the local Y axis.
+3. Elbow pitch around the local Y axis.
+
+For 3D mode, link lengths represent:
+
+```text
+base height, upper-arm length, forearm length
