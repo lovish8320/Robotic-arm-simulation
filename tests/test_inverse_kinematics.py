@@ -6,7 +6,7 @@ from src.inverse_kinematics import inverse_kinematics
 
 
 def test_inverse_kinematics_returns_solutions_that_reach_target_pose():
-    target_pose = np.array([2.0, 1.0, np.pi / 2])
+    target_pose = np.array([1.5, 1.0, np.pi / 2])
     link_lengths = [1.0, 1.0, 1.0]
 
     elbow_up, elbow_down = inverse_kinematics(target_pose, link_lengths)
@@ -24,7 +24,7 @@ def test_inverse_kinematics_returns_solutions_that_reach_target_pose():
 
 def test_inverse_kinematics_returns_distinct_elbow_configurations():
     elbow_up, elbow_down = inverse_kinematics(
-        target_pose=[2.0, 1.0, np.pi / 2],
+        target_pose=[1.5, 1.0, np.pi / 2],
         link_lengths=[1.0, 1.0, 1.0],
     )
 
