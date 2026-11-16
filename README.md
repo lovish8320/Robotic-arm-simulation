@@ -43,6 +43,22 @@ The program prints the solved joint angles and end-effector transform, then
 opens an interactive Matplotlib 3D window. Close that window to finish the
 program. Add `--no-show` when running without a display or in automated checks.
 
+## Interactive 3D controls
+
+Launch a slider-controlled 3D arm window:
+
+```powershell
+python -m src.interactive_3d
+```
+
+Move the base-yaw, shoulder-pitch, and elbow-pitch sliders to update the arm
+and its end-effector XYZ position live. Use **Reset** to return all joints to
+zero. Custom dimensions can be supplied with:
+
+```powershell
+python -m src.interactive_3d --lengths 0.5 1.0 0.8
+```
+
 ## 3D arm model
 
 The spatial 3R arm has three joints:
